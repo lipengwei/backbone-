@@ -1,0 +1,28 @@
+二、模型 ----- Backbone.Model
+  
+  模型 是所有Javascript应用程序的核心，包括交互数据及相关的大量逻辑：转换、验证、计算属性和访问控制。你可以用特定的方法扩展 Backbone.Model，模型也提供了一组基本的管理变化的功能。
+  下面的示例演示了一个模型，包括自定义方法、设置属性、以及触发属性变化的事件。
+    var Sidebar = Backbone.Model.extend({                         ---->创建一个model对象 Sidebar
+        promptColor: function(){                                  ---->自定义一个方法 promptColor
+          var cssColor = prompt("请输入一个css颜色值：");         ---->定义一个属性 cssColor 
+          this.set({color: cssColor});                            ---->给model的color属性赋值 (4)
+        }
+    });
+    
+    window.sidebar = new Sidebar;                                 ---->初始化model实例 sidebar (1)
+    
+    sidebar.bind("change:color", function(){                      ---->设置model的color属性改变时的事件，和回调函数 (5)
+        $("#sidebar").css({background: color});                   ---->回调函数执行结果 (6)
+    });
+    
+    sidebar.set({color: "white"});                                ---->给model的实例sidebar设置color属性值 (2)
+    
+    sidebar.promptColor();                                        ---->执行自定义函数promptColor (3)
+    
+  上述例子执行过程：
+    当model初始化完成时，给model实例设置color值为white，执行自定义函数promptColor，从消息框中得到str2的输入值，这时model的color值发生改变，执行model绑定的方法，并执行回调函数。如(1),(2),(3),(4),(5),(6)执行过程。
+    
+  注释：javascript的prompt()使用方法：
+    语法：prompt(str1, str2);
+    参数：str1表示消息框中显示的文本，不可修改；str2表示要在文本框中输入额内容，可以修改
+    返回：点击OK，返回str2中的值；点击cancel，返回null
