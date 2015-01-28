@@ -1,0 +1,22 @@
+一、事件---Backbone.Events  (bind, unbind, trigger)
+
+    Events是一个可以被mix到任意对象的模块，它拥有让对象绑定和触发自定义事件的能力。事件在绑定之前是不需要事先声明的，还可以携带参数。
+      var object = {};
+      _.extend(object, Backbone.Events);
+      object.bind("alert",function(msg){alert("Triggerd "+ msg)});     ---->绑定自定义事件，并且可以带参数
+      object.trigger("alert", "www.csser.com");                        ---->触发自定义事件，并且传递参数
+    
+    bind =====> object.bind(event, callback, [context])              ---->绑定自定义事件，毁掉函数，携带参数
+      绑定callback函数到object对象，当事件触发时执行回调函数callback。如果一个页面中有大量不同的事件，按照惯例，使用冒号指定命名空间： "poll:start"或者"change:selection"
+      当callback执行时提供第三个可选参数，可以为 this 指定上下文： model.bind("change", this.render, this)
+      绑定到特殊事件 "all"的回调函数会在任意事件发生时被触发，其第一个参数为事件的名称，例如，将一个对象的所有事件代理到另一个对象：
+        proxy.bind("all",function(eventName){object.trigge(eventName);})
+        
+    unbind =====> object.unbind([event], [callback])
+      从object对象移除先前绑定的callback函数，如果不指定第二个参数，所有的event都将移除，如果第一个也不指定，对象将删除所有的毁掉函数。
+      object.unbind("change", onchange);                    --->只移除onchange回调函数
+      object.unbind("change");                              --->移除所有"change"回调函数
+      object.unbind();                                      --->移除所有的回调函数
+      
+    trigger =====> object.trigger(event, [*args])
+      触发event事件的回调函数，后续传入trigger的参数会被依次传入事件回调函数。
