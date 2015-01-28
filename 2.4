@@ -1,0 +1,31 @@
+toJSON  ===> model.toJSON()
+  返回模型attributes副本的JSON字符串化形式。它可用于模型的持久化、序列化，或者传递到视图前的扩充。该方法的名称有点混乱，因为它事实上并不返回JSON字符串，但是JavaScript API for JSON.stringify可以实现。
+    var artist = new Backbone.Model({                             ---->就是返回model的属性值得JSON形式？？？
+      firstName: "李华",
+      lastName: "鲜",
+    })
+    
+    artist.set({birthday: "Dec 13,1989"});
+    alert(JSON.stringify(artist));                                ----> 先停留在理论理解，回头做例子
+    
+fetch  ===> model.fetch([options])
+  从服务器重置模型状态，这对模型尚未填充数据，或者服务器端已有最新状态的情况很有用处，如果服务器状态与当前属性不同，则触发 "change"事件，选项的散列参数接受success 和 error 回调函数，回调函数中可以传入(model, response)作为参数。
+    setInterval(function(){                                       ----> 每隔10秒从服务器拉取数据以保持channel是最新的
+      channel.fetch();                                            ----> 既然是服务器，所以channel必定设置了服务器的url
+    }, 1000);
+    
+save  ===> model.save([attributes],[options])
+  通过委托Backbone.sync保存模型到数据库(或可替代的持久层)。attributes散列表(在set)应当包含想要改变的属性，不涉及的键不会被修改。如果模型中有validate方法，并且验证失败，模型不会保存。如果模型isNew,保存将采用"create"(HTTP post)方法，如果模型已经在服务器存在，保存将采用"update"(HTTP, put)方法。在下面的示例中，注意我们是如何在模型中初次保存时接受到 "create"请求，第二次接收到"update"请求的。
+    Backbone.sync = function(method, model){
+      alert(method+":"+JSON.stringify(model));
+      model.id=1;
+    }
+    var book = new Backbone.Model({
+      title: "the Rough Riders",
+      author: "Theodore Roosevelt"
+    })
+    book.save();
+    book.save({author: "Teddy"});
+    
+    save支持在选项散列表中传入success和error回调函数，回调函数支持传入(model, response)作为参数，如果模型拥有validate方法并且验证失败，error回调函数会执行，如果服务端验证失败，返回非200的http响应码，将产生文本或JSON的错误内容。
+    book.save({author: "FDR"}, {error: function(){...}})
