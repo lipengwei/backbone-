@@ -1,0 +1,33 @@
+has   ===> model.has(attribute)
+  属性值为非null或者非undefined时返回 true
+    if (note.has("title")){
+      ...
+    }
+    
+unset ===> model.unset(attribute, [options])
+  从内部属性散列表中删除指定属性，如果未设置 silent 选项，会触发 change 事件。
+  
+clear ===> model.clear([options])
+  从模型中删除所有属性，如果未设置 silent 选项，会触发 "change" 事件
+  
+id   ===> model.id
+  模型的特殊属性，id可以使任意字符串(整形id或者UUID)。在属性中设置的id会被直接拷贝到模型属性上，我们可以从集合(collections)中通过id获取模型，另外id通常用于生成模型的URLs。
+  
+cid  ===> model.cid                            ----> 需要在理解？？？
+  模型的特殊属性，cid或客户id是当所有模型创建时自动产生的唯一标识符。客户ids在模型尚未保存到服务器之前便存在，此时模型可能仍不具有最终的id，客户ids的形式为：c1, c2, c3...
+  
+attributes ===> model.attributes              ----> 获取模型属性的副本toJSON ？？？
+  attributes属性时包含模型状态的内部散列表，建议采用 set 更新属性而不要直接修改。如果要获取模型属性的副本，用toJSON取而代之。
+  
+defaults  ===> model.defaults or model.defaults()
+  defaults散列(或函数)用于外i模型指定默认属性，创建模型实例时，任何未指定的属性会被设置为其默认值。
+    var Meal = Backbone.Model.extend({        ----> 很容易理解，就是设置默认属性
+      defaults: {
+        "appetizer": "caesar salad",
+        "entree":    "ravioli",
+        "dessert":   "cheesecake"
+      }
+    });
+    alert("Dessert will be " +　(new Meal).get("dessert"));
+    
+    需要提醒的是，在javascript中，对象时按引用传值的，因此包含对象作为默认值，它会被所有实例共享。----> 所有实例共享
