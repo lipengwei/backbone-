@@ -1,0 +1,26 @@
+new Model([attributes])
+当创建模型实例时，可以传入 属性 初始值，这些值会被set到模型，如果定义了initialize函数，该函数会在模型创建后执行。
+
+  new Site({                                        ---->当new一个model实例的时候，会执行initialize函数，
+    title: "CSSer, 关注web前后端技术"，             ---->model创建时，可以传入 属性 初始值，这个值相当于set设置属性值
+    author: "一回"
+  });
+  
+  
+get   ===>  model.get(attribute)
+  从模型获取当前属性值，比如： csser.get("title")
+  
+set   ===>  model.set(attributes, [options])
+  向模型设置一个或多个散列属性。如果任何一个属性改变了模型的状态，在不传入 {silent: true} 选项参数的情况下，会触发 "change" 事件。可以绑定事件到某个属性，例如: change:title, 及 change:content .
+  csser.set({title: "CSSer", content: "http://www.csser.com"});
+  
+  如果模型拥有validate方法，那么属性验证会在set之前执行，如果验证失败，模型不会发生变化，这时set会返回false。也可以在选项中传
+入error回调函数，此时验证失败时会执行它而不触发"error"事件。        ---->需要例子？？？
+
+
+escape  ===> model.escape(attribute)
+  与get类似，但返回模型属性值得HTML转义后的版本，如果将数据从模型插入html，使用escape取数据可以避免xss攻击。
+    var hacker = new Backbone.Model({
+      name: "<script>alert('XSS')</script>"
+    });
+    alert(hacker.escape('name'));
