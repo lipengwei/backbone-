@@ -16,7 +16,7 @@ fetch  ===> model.fetch([options])
     
 save  ===> model.save([attributes],[options])
   通过委托Backbone.sync保存模型到数据库(或可替代的持久层)。attributes散列表(在set)应当包含想要改变的属性，不涉及的键不会被修改。如果模型中有validate方法，并且验证失败，模型不会保存。如果模型isNew,保存将采用"create"(HTTP post)方法，如果模型已经在服务器存在，保存将采用"update"(HTTP, put)方法。在下面的示例中，注意我们是如何在模型中初次保存时接受到 "create"请求，第二次接收到"update"请求的。
-    Backbone.sync = function(method, model){
+    Backbone.sync = function(method, model){                      ---->这个method可以对应相应的后台方法？？？
       alert(method+":"+JSON.stringify(model));
       model.id=1;
     }
