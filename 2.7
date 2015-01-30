@@ -1,0 +1,17 @@
+change   ===> model.change()
+  手动触发"change"事件，如果已经在set函数中传入选项参数 {silent: true}, 当所有操作结束时，可以手动调用model.change().
+  
+hasChanged ===> model.hasChanged([attribute])
+  标识模型从上次"change"事件发生后是否改变过，如果传入attribute，当指定属性改变后返回true。
+    book.bind("change", function(){                   ----> 仅当change方法发生过之后才生效
+      if (book.hasChanged("title")){
+        ...
+      }
+    })
+  
+changedAttributes ===> model.changeAttributes([attributes])
+  仅获取模型属性已改变的散列表，或者也可以传入外来的attributes散列，返回该散列与模型不同的属性，一般用于指出视图的哪个部分已被更新，或者确定哪些需要与服务器进行同步。
+  
+previous  ===> model.previous(attribute)
+  在"change"事件发生的过程中，本方法可被用于获取已改变属性的旧值。
+    
