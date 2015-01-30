@@ -1,0 +1,24 @@
+url    ===>  model.url()
+  返回模型资源 在服务器上位置 的相对URL。如果模型放在其他地方，可通过合理的逻辑重载该方法。生成URLs的形式为："/[collection.url]/[id]", 如果模型不是集合的一部分，则URLs形式为："/[urlRoot]/id".                  ----> 注意这个有了collection的使用
+  
+  由于是委托到Collection#url来生成URL，所以首先需要确认它是否定义过，或者所有模型共享一个通用根URL时，是否存在urlRoot属性，例如，一个id为101的模型，存储在url为"/documents/7/notes"的Backbone.Collection中，那么该模型的URL为： "/documents/7/notes/101"
+  
+urlRoot ===> model.urlRoot                                                        ----> 不太懂？？？
+  如果使用集合外部的模型，通过指定urlRoot来设置生成基于模型id的URLs的默认url函数。 "/[urlRoot]/id"
+    var Book = Backbone.Model.extend({urlRoot： "/books"});
+    var solaris = new Book({id: "1083-lem-solaris"});
+    alert(solaris.url());
+  
+parse  ===> model.parse(response)                                                 ----> ???????
+  parse会在通过fetch从服务器返回模型数据，以及save时执行，传入本函数的为原始 response 对象，并且应当返回可以set到模型的属性散列表，默认实现是自动进行的，仅简单传入JSON响应，如果需要使用已存在的API，或者更好的命名空间响应，可以重载它。
+  
+  如果使用的rails后端，需要注意Rails's默认的to_json实现已经包含了命名空间之下的模型属性，对于无缝的后端集成环境禁用这种行为：
+    ActiveRecord::Base.include_root_in_json = false
+    
+clone  ===> model.clone()
+  返回与模型属性一致的新的实例
+  
+idNew  ===> model.isNew()
+  模型是否已经保存到服务器，如果模型尚无id，则被视为新的。
+    
+    
