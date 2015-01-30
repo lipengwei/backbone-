@@ -25,3 +25,11 @@ validate ===> model.validate(attributes)
     })
     
     现在明白了validate方法的执行过程了：一个模型中有set或者save时，就会执行validate方法，并传入即将要更新的值，若成功，则什么都不返回，若失败，会返回一个可以描述error的对象。
+    
+    "error"事件对模型和集合级别提供粗粒度的错误信息很有帮助，但是如果想设计更好的处理错误的特定视图，可以直接传入error回调函数重载事件。
+    
+    account.set({access: "unlimited"}, {
+      error: function(model, error){                                      ---->直接重载error回调函数
+        alert(error);
+      }
+    })
