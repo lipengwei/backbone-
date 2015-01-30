@@ -1,0 +1,27 @@
+destroy  ===> model.destroy([options])
+  通过委托HTTP delete 请求到Backbone.sync销毁服务器上的模型，接受success和error回调函数作为选项散列表参数，将在模型上触发"destroy" 事件，该事件可以通过任意包含它的集合向上冒泡。
+    book.destroy({success:function(model, response){
+      ...
+    }});
+    
+validate ===> model.validate(attributes)
+  该方法是未定义的，如果有在javascript执行的需要，建议用自定义的验证逻辑重载它，validate会在set和save之前调用，并传入待更新的属性，如果模型和属性通过验证，不返回任何值；如果属性不合法，返回一个可选择的错误，该错误可以是简单的用于显示的字符串错误信息，或者是一个可以描述错误详细的error对象，如果validate返回错误，set和save将不会执行，失败的验证会触发一个"error"事件。
+    var Chapter = Backbone.Model.extend({
+      validate: function(attrs){
+        if (attrs.end < attrs.start){                                     ---->attrs表示model实例
+          return "can't end before it starts";                            ---->即验证失败返回的error对象
+        }
+      }
+    });
+    var one = new Chapter({                                               ---->设置一个title属性
+      title: "Chapter One: The Beginning"
+    });
+    one.bind("error", function(model, error){                             ---->绑定一个验证方法
+      alert(model.get("title") + " " + error);
+    })
+    one.set({                                                             ---->validate在set和save之前调用，传入待更新属性
+      start: 15,
+      end:  10
+    })
+    
+    现在明白了validate方法的执行过程了：一个模型中有set或者save时，就会执行validate方法，并传入即将要更新的值，若成功，则什么都不返回，若失败，会返回一个可以描述error的对象。
