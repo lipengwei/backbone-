@@ -14,4 +14,13 @@ changedAttributes ===> model.changeAttributes([attributes])
   
 previous  ===> model.previous(attribute)
   在"change"事件发生的过程中，本方法可被用于获取已改变属性的旧值。
+    var bill = new Backbone.Model({
+      name: "二回"
+    });
+    bill.bind("change:name", function(model, name){
+      alert("名字已从"+bill.previous("name")+"改为"+name);
+    });
+    bill.set({name: "一回"});
     
+  previousAttributes  ===> model.previousAttributes()
+    返回模型的上一个属性散列的副本，一般用于获取模型的不同版本之间的区别，或者当发生错是回滚模型状态
