@@ -1,0 +1,25 @@
+add  ===> collection.add(models, [options])
+  向集合中增加模型(或模型数组)。默认会触发"add"事件， 可以传入{silent: true}关闭。如果定义了模型属性，也可以传入原始的属性对象让其看起来像一个模型实例，例如传入{at: index}可以讲模型插入集合中特定的位置。
+    var ships = new Backbone.Collection:
+    ships.bind("add", function(ship){
+      alert("Ahoy" + ship.get("name") +　"!");
+    });
+    ships.add([
+      {name: "Flying Dutchman"},
+      {name: "Black Peral"}
+    ])
+remove ===> collection.remove(models, [options])
+  从集合中删除模型(或模型数组)。会触发"remove"事件，同样可以使用silent关闭。
+  
+get ===>　Collection.get(id)
+  返回集合中id为id的模型。
+    var book = Library.get(110);
+    
+getByCid  ===> collection.getByCid(cid)
+  通过制定客户id返回集合中的模型，客户id是指模型创建时自动生成的.cid属性，在模型尚未保存到服务器时还没有id值，所以通过cid获取模型很有用处。
+  
+at ===>　collection.at(index)
+  返回集合中指定索引的模型对象，不论你是否对模型进行了重新排序，at始终返回其在集合中插入时的索引值。
+  
+length ===> collection.length
+  与数组类似，集合拥有length属性，返回该集合拥有的模型数量
