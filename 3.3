@@ -1,0 +1,33 @@
+url   ===> collections.url or collection.url()
+  设置url属性(或函数)以指定集合对应的服务器位置，集合内的模型使用url构造自身的URLs。
+    var Notes = Backbone.Collection.extend({
+      url: "/notes"
+    });
+    //或者更复杂的一些方式
+    var Notes = Backbone.Collection.extend({
+      url: function(){
+        return this.document.url()+ "/notes";
+      }
+    })
+    
+  parse  ===> collection.parse(response)
+    每一次调用fetch从服务器拉取集合的模型数据时，parse都会被调用，本函数接收原始response对象，返回可以add到集合的模型属性数组，默认实现是无需操作的，只需简单传入服务器返回JSON对象，如果需要处理遗留API，或者在返回数据定义自己的命名空间，可以重写本函数。
+      var Tweets = Backbone.Collection.extend({
+        //twitter 搜索API在"result"键下返回tweets
+        parse: function(response){
+          return response.results;
+        }
+      })
+      
+  fetch  ===> collection.fetch([options])
+    从服务器拉取集合的默认模型，成功接收数据后会被重置(reset)集合，options支持cussess和error回调函数，回调函数接收(collection,response）作为参数，可以委托Backbone.sync在随后处理个性化需求，处理fetch请求的服务器应当返回模型的JSON数组。
+      Backbone.sync=function(method, model){
+        alert(method+":"+model.url);
+      }
+      var Accounts = new Backbone.Collection;
+      Accounts.url = '/accounts';
+      Accounts.fetch();
+      如果希望向当前集合追加模型数据而不是替换，传入{add: true}作为fetch参数。
+      fetch的参数可以支持直接传入Jquery.ajax作为参数，所以拉取指定页码的集合数据可以这样写：
+        Documents.fetch({data: {page: 3}}
+        不建议在页面加载完毕时利用fetch拉取并填充集合数据——所有页面初始数据应当在bootstrapped时已经就绪，fetch适用于惰性加载，不需要立刻展现的模型数据。
