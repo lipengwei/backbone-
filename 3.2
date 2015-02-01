@@ -1,0 +1,27 @@
+comparator  ===>　collection.comparator
+  默认情况下，集合没有声明comparator函数，如果定义了该函数，集合中的模型会按照指定算法进行排序，换言之，模型被增加的同时会插入合适位置，Compartor接收模型作为参数，返回数值或字符串作为相对其他模型的排序依据。
+  注意即使下面例子中的章节hi后加入集合中的，但它们都会遵循正确的排序：
+    var Chapter = Backbone.Model;
+    var chapters = new Backbone.Collection;
+    chapters.comparator = function(chapter){
+      return chapter.get("page");
+    }
+    chapters.add(new Chapter({page: 9, title: "The End"}));
+    chapters.add(new Chapter({page: 5, title: "The www.csser.com"}));
+    chapters.add(new Chapter({page: 1, title: "The Beginning"}));
+    alert(chapters.pluck('title'));
+    说明：comparator函数与javascript的"sort"并不相同，后者必须返回0,1,-1.前者则更像sortby,一个更友好的API.
+    
+sort  ===> collection.sort([options])
+  强制对集合进行重排序，一般情况下不需要调用本函数，因为comparator函数会实时排序。如果不指定{silent: true},调用sort会触发集合的"reset"事件。
+  
+pluck  ===> collection.pluck(attribute)
+  从集合中的每个模型拉取attribute.等价于调用map,并从迭代器中返回单个属性。
+    var stooges = new Backbone.Collection([
+      new Backbone.Model({name: "Curly"});
+      new Backbone.Model({name: "Larry"});
+      new Backbone.Model({name: "Moe"})
+    ])
+    
+    var names = stooges.pluck("name");
+    alert(JSON.stringify(names));
