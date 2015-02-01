@@ -1,2 +1,29 @@
 Backbone.Collection
   集合石模型的有序组合，我们可以再集合上绑定"change"事件，从而当集合中的模型发生变化时获得通知，集合也可以监听"add"和"remove"事件，从服务器更新，并能使用Underscore.js提供的方法。
+  集合中的模型触发的任何事件都可以在集合身上直接触发，所以我们可以监听集合中模型的变化：Documents.bind("change:selected", ...)
+  
+  extend  ===> Backbone.Collection.extend(properties, [classProperties])
+    通过扩展Backbone.Collection创建一个Collection类，实例属性参数properties以及类属性参数classProperites会直接注册到集合的构造函数，                                                                          ----> ？？？
+  
+  model  ===> collection.model                                                ----> ？？？
+    指定集合的模型类，可以传入原始属性对象(和数组)来add,create,以及reset,传入的属性会被自动转换为合适的模型类型
+      var Library = Backbone.Collection.extend({
+        model: Book,
+      })
+      
+  constructor/initialize  ===> new Collection([models], [options])
+    当创建集合时，你可以选择传入初始的模型数组，集合的comparator函数也可以作为选项传入，如果定义了initialize函数，会在集合创建时被调用，
+      var tabs = new TabSet([tab1, tab2, tab3]);
+      
+  models  ===> collections.models
+    访问集合中模型的原始值，通常我们使用get,at,或者Underscore方法模型对象，但偶尔也需要直接访问。
+    
+  toJSON  ===> collection.toJSON()
+    返回集合中包含的每个模型对象的数组，可用于集合的序列化和持久化，本方法名称容易引起混淆，因为它与Javascript's JSON API命名相同。
+      var collection = new Backbone.Collection([
+        {name: "Tim", age: 5},
+        {name: "Ida", age: 26},
+        {name: "Rob", age: 55}
+      ])
+      
+      alert(JSON.stringify(collection));
