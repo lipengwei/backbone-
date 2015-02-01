@@ -1,0 +1,5 @@
+Backbone代理了Underscore.js从而为 Backbone.Collection提供了26个迭代函数，这里没有列出这些函数的使用方法：
+  ....
+  这里全部忽略，有时间在研究， 这里全都是迭代函数。
+  
+  
