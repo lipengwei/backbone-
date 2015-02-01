@@ -1,0 +1,18 @@
+reset  ===> collection.reset(models, [options])
+  每次一个的向集合做增删操作已经很好了，但有时会有很多的模型变化以至于需要对集合做大批量的更新操作，利用reset可将集合替换为新的模型(或键值对象)，结束后触发"reset"事件，传入(silent: true)忽略"reset"事件的触发，不传入任何参数将清空整个集合。
+  这里有一个在页面加载完毕后reset初始启动集合的例子：
+    <script>
+      Accounts.reset(<%= @csser.to_json %>);
+    </script>
+    
+create  ===> collection.create(attributes, [options])
+  在集合中创建一个模型，等价于用键值对象实例一个模型，然后将模型保存到服务器，保存成功后将模型增加到集合中，如果验证失败会阻止模型创建，返回false，否则返回该模型，为了能正常运行，需要在集合中设置model属性，
+  create方法接收键值对象或者已经存在尚未保存的模型对象作为参数。
+    var Library = Backbone.Collection.extend({
+      model: Book
+    })
+    var NYPL = new Library;
+    var othello = NYPL.create({
+      title: "API",
+      author: "asdf"
+    })
