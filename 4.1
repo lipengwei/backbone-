@@ -1,0 +1,22 @@
+constructor/initialize   new Router([options])
+  实例化一个路由对象，你可以直接传入routes键值对象作为参数，如果定义该参数，它们将被传入initialize构造函数中初始化。
+  
+route   router.route(toute, name, callback)
+  为路由对象手动创建路由，route参数可以是  路由字符串 或 正则表达式，每个捕捉到的被传入的路由或者正则表达式，都将作为参数传入回调函数(callback)。一旦路由匹配，name 参数会触发 "route:name"事件。
+  
+    initialize: function(options){
+      //匹配 #page/10, 传入回调函数"10"
+      this.route("rpage/:number", "page", function(number){ ... });
+      //匹配 /csser.com/b/c/open, 传入回调函数 "csser.com/b/c"
+      this.route(/^(.*?)/open$/, "open", function(id){ ... });
+    }
+    
+navigate     router.navigate(fragment, [triggerRoute])
+  手动到达应用程序中的某个位置，传入triggerRoute 以执行路由动作函数。
+  
+    openPage: function(pageNumber){
+      this.document.pages.at(pageNUmber).open();
+      this.navigate("page/" + pageNumber);
+    }
+    # 或者 ...
+    app.navigate("help/troubleshooting", true);
