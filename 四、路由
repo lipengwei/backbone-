@@ -1,0 +1,39 @@
+Backbone.Router
+  web应用程序通常需要为应用的重要位置提供可连接，可收藏，可分享的URLs。直到最近，锚点(hash)片段(#page)可以被用来提供这种连接，同时随着 history Api的到来，锚点已经可以用于处理标准urls(/page)。
+  Backbone.Router为客户端路由提供了许多方法，并能连接到指定的动作(actions)和事件(events)，对于不支持History Api的旧浏览器，路由提供了优雅的回调函数并可以透明的进行url片段的转换。
+  
+  页面加载期间，当应用已经创建了所有的路由，需要调用 Backbone.history.start(),或Backbone.history.start({pushState:true})来确保驱动初始化url的路由。
+  
+extend  Backbone.Router.extend(properties, [classProperties])
+  创建一个自定义的路由类，可以通过routes定义路由动作键值对，当匹配了url片段便执行定义的动作。
+    var Workspace = Backbone.Router.extend({
+      routes: {
+        "help": "help",                       //#help
+        "search/:query": "search",            //#search/kiwis
+        "search/:query/p:page":　"search"     //#search/kiwis/p7
+      },
+      
+      help: function(){
+        ...
+      },
+      
+      search: function(){
+        ...
+      }
+    })
+    
+routes  router.routes
+  routes将带参数的urls映射到路由实例方法上，这与视图的事件键值对 非常类似，路由可以包含参数，:param, 他在斜线之间匹配url组件，路由也支持通配符，*splat，可以匹配多个url组件。
+  举个例子，路由"/search/:query/p:page"能匹配#search/obama/p2, 这里传入"obama"和"2"到路由对应的动作中去了，"file/*path"路由可以匹配#file/nested/folder/file.txt,这时传入动作参数为"nested/folder/file.txt".
+  当访问者点击浏览器后退按钮，或者输入url，如果匹配一个路由，此时会触发一个基于动作名称的 事件，其他对象可以监听这个路由并接收到通知，下面的实例中，用户访问 #help/uploading将从路由中触发route:help事件。
+  
+  routes: {
+    "help/:page": "help",
+    "download/*path": "download",
+    "folder/:name": "openFolder",
+    "folder/:name-:mode": "openfolder"
+  }
+  
+  router.bind("route:help", function(page){
+    ...
+  })
